@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+     profiles: dev
+     datasource:
+       druid:
+         driver-class-name: com.mysql.jdbc.Driver
+         url: jdbc:mysql://120.25.253.116:3306/student_service?useUnicode=true&characterEncoding=utf8&useSSL=false
+         username: root
+         password: zhuzhucheng123
+         connection-init-sqls: set names utf8mb4;
+     session:
+       store-type: none
+     jpa:
+       show-sql: true
+       open-in-view: true
+       properties:
+         hibernate.enable_lazy_load_no_trans: true
+# weChat config
+wechat:
+  mp:
+    appId: wx4c49d718dbc5b3a4
+    secret: b37128a06e9ab8c8a210f4e9ea3ad229
+    token: zzc_student_service_2018
+    aesKey: FhO2btVtMFI4y3AMULNoSxaBnaRkTLuzY1xh7ocWUKA
+authUrl: http://sa-api.zswhjt.com/wechat/user_info
+authRedirectUrl: http://sa-wx.zswhjt.com/auth_success?wantIntoUrl=

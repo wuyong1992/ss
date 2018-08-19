@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,7 +32,7 @@ import java.util.Date;
 public class JobInfoBackup {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "主键ID")
     private Integer jobId;
 
@@ -39,7 +40,7 @@ public class JobInfoBackup {
     private Integer enterpriseId;
 
     @ApiModelProperty(value = "职位名称")
-    private String jobTile;
+    private String jobTitle;
 
     @ApiModelProperty(value = "职位类别ID")
     private Integer jobCategoryId;
@@ -72,16 +73,16 @@ public class JobInfoBackup {
     private String jobDetail;
 
     @ApiModelProperty(value = "真实的浏览人数")
-    private String browseNum;
+    private Integer browseNum;
 
     @ApiModelProperty(value = "预设的浏览人数基数")
-    private String baseBrowseNum;
+    private Integer baseBrowseNum;
 
     @ApiModelProperty(value = "真实的申请人数")
-    private String applyNum;
+    private Integer applyNum;
 
     @ApiModelProperty(value = "预设的申请人数基数")
-    private String baseApplyNum;
+    private Integer baseApplyNum;
 
     @ApiModelProperty(value = "排序字段")
     private Integer sort;
@@ -90,7 +91,7 @@ public class JobInfoBackup {
     private Integer status;
 
     @ApiModelProperty(value = "状态原因")
-    private Integer statusReason;
+    private String statusReason;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;

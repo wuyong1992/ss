@@ -36,4 +36,11 @@ public interface JobCategoryService {
      * @return
      */
     List<JobCategory> getCategoryList();
+
+    /**
+     * 获取单个招聘分类信息
+     * @param categoryId
+     * @return
+     */
+    JobCategory getById(Integer categoryId);
 }

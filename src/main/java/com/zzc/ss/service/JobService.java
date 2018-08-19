@@ -57,6 +57,26 @@ public interface JobService {
      * @param status
      * @return
      */
-    Page<JobInfo> getJonInfoList(Pageable pageable, String jobCategoryId, String enterpriseId, String status);
+    Page<JobVO> getJonInfoList(Pageable pageable, String jobCategoryId, String enterpriseId, String status);
 
+    /**
+     * 审核某个招聘信息
+     * @param jobId
+     * @return
+     */
+    Boolean applySuccessByJobId(Integer jobId);
+
+    /**
+     * 驳回某个招聘信息
+     * @param jobId
+     * @return
+     */
+    Boolean applyFailByJobId(Integer jobId);
+
+    /**
+     * 隐藏某个招聘信息
+     * @param jobId
+     * @return
+     */
+    Boolean hideByJobId(Integer jobId);
 }

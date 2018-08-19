@@ -28,3 +28,6 @@ wechat:
     aesKey: FhO2btVtMFI4y3AMULNoSxaBnaRkTLuzY1xh7ocWUKA
 authUrl: http://sa-api.zswhjt.com/wechat/user_info
 authRedirectUrl: http://sa-wx.zswhjt.com/auth_success?wantIntoUrl=
+logging:
+  level:
+    com.zzc.ss: debug

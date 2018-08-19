@@ -79,6 +79,14 @@ public class ControllerExceptionHandler {
     public ServerResponse handlerInfoNotCompleteException(InfoNotCompleteException ex) {
         return ServerResponse.createByErrorMsg(ex.getMessage());
     }
+    /**
+     * 招聘分类不存在异常
+     */
+    @ExceptionHandler(JobCategoryNotExistException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ServerResponse handlerJobCategoryNotExistException(JobCategoryNotExistException ex) {
+        return ServerResponse.createByErrorMsg(ex.getMessage());
+    }
 
 
 }

@@ -31,7 +31,7 @@ public class JobVO {
     private Integer enterpriseId;
 
     @ApiModelProperty(value = "职位名称")
-    private String jobTile;
+    private String jobTitle;
 
     @ApiModelProperty(value = "职位类别ID")
     private Integer jobCategoryId;
@@ -40,13 +40,13 @@ public class JobVO {
     private Integer recruitNum;
 
     @ApiModelProperty(value = "招聘有效期类型，1短期；2长期；短期时间段")
-    private Date timelinessType;
+    private Integer timelinessType;
 
     @ApiModelProperty(value = "开始时间，当timelinessType为1时，有值")
     private Date startTime;
 
     @ApiModelProperty(value = "结束时间，当timelinessType为1时，有值")
-    private Integer endTime;
+    private Date endTime;
 
     @ApiModelProperty(value = "结算周期类型,1日结：2周结；3月结")
     private Integer payPeriodType;
@@ -64,16 +64,16 @@ public class JobVO {
     private String jobDetail;
 
     @ApiModelProperty(value = "真实的浏览人数")
-    private String browseNum;
+    private Integer browseNum;
 
     @ApiModelProperty(value = "预设的浏览人数基数")
-    private String baseBrowseNum;
+    private Integer baseBrowseNum;
 
     @ApiModelProperty(value = "真实的申请人数")
-    private String applyNum;
+    private Integer applyNum;
 
     @ApiModelProperty(value = "预设的申请人数基数")
-    private String baseApplyNum;
+    private Integer baseApplyNum;
 
     @ApiModelProperty(value = "排序字段")
     private Integer sort;
@@ -82,7 +82,7 @@ public class JobVO {
     private Integer status;
 
     @ApiModelProperty(value = "状态原因")
-    private Integer statusReason;
+    private String statusReason;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -92,6 +92,12 @@ public class JobVO {
 
     @ApiModelProperty(value = "用户申请状态")
     private Integer userApplyStatus;
+
+    @ApiModelProperty(value = "发布该招聘的企业名称")
+    private String enterpriseName;
+
+    @ApiModelProperty(value = "该照片所属的分类名称")
+    private String jobCategoryName;
 
 
 }

@@ -2,6 +2,7 @@ package com.zzc.ss.service.impl;
 
 import com.zzc.ss.entity.JobCategory;
 import com.zzc.ss.enums.JobCategoryStatusEnum;
+import com.zzc.ss.exception.JobCategoryNotExistException;
 import com.zzc.ss.repository.JobCategoryRepository;
 import com.zzc.ss.repository.JobInfoRepository;
 import com.zzc.ss.service.JobCategoryService;
@@ -45,6 +46,15 @@ public class JobCategoryServiceImpl implements JobCategoryService {
     @Override
     public List<JobCategory> getCategoryList() {
         return jobCategoryRepository.findAllByStatus(JobCategoryStatusEnum.ENABLED.getCode());
+    }
+
+    @Override
+    public JobCategory getById(Integer categoryId) {
+        JobCategory jobCategory = jobCategoryRepository.getOne(categoryId);
+        if (jobCategory == null) {
+            throw new JobCategoryNotExistException();
+        }
+        return jobCategory;
     }
 
 }

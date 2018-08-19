@@ -25,5 +25,20 @@ public interface EnterpriseInfoRepository extends JpaRepository<EnterpriseInfo, 
     @Query("select e.enterpriseId from EnterpriseInfo e where e.fullName like %?1%")
     List<Integer> selectEnterpriseIdByFullNameLike(String fullName);
 
+    /**
+     * 根据ID查询企业去盐城
+     * @param enterpriseId
+     * @return
+     */
+    @Query("select e.fullName from EnterpriseInfo e where e.enterpriseId = ?1")
+    String selectEnterpriseFullNameById(Integer enterpriseId);
+
+
+    /**
+     * 获取简单的对象
+     * @return
+     */
+    @Query("select e.enterpriseId, e.fullName, e.status from EnterpriseInfo e order by e.sort DESC ")
+    List<EnterpriseInfo> selectSimpleList();
 
 }

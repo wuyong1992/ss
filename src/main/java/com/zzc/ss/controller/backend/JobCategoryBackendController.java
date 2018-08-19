@@ -50,6 +50,13 @@ public class JobCategoryBackendController {
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.OPERATE_SUCCESS, list);
     }
 
+    @GetMapping("{categoryId}")
+    @ApiOperation(value = "获取单个分类信息")
+    public ServerResponse<JobCategory> getCategoryList(@PathVariable Integer categoryId){
+       JobCategory jobCategory = jobCategoryService.getById(categoryId);
+        return ServerResponse.createBySuccess(Const.ExecuteResultMessage.OPERATE_SUCCESS, jobCategory);
+    }
+
 
 
 

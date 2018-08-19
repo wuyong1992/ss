@@ -17,6 +17,7 @@ import com.zzc.ss.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -110,6 +111,16 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public List<JobInfo> getSelfJobList(Integer enterpriseId) {
         return jobInfoRepository.findAllByEnterpriseId(enterpriseId);
+    }
+
+    @Override
+    public List<EnterpriseInfo> getSimpleList() {
+        return enterpriseInfoRepository.selectSimpleList();
+    }
+
+    @Override
+    public List<EnterpriseInfo> getAllList() {
+        return enterpriseInfoRepository.findAll(new Sort(Sort.Direction.DESC, "sort"));
     }
 
 }

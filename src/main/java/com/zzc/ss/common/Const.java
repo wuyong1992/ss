@@ -44,6 +44,7 @@ public class Const {
         public static final String USER_JOB_NOT_EXIST = "当前求职信息不存在";
         public static final String ENTERPRISE_NOT_EXIST = "当前企业不存在";
         public static final String INFO_NOT_COMPLETE = "信息不完善";
+        public static final String JOB_CATEGORY_NOT_EXIST = "当前招聘分类不存在";
     }
 
 }

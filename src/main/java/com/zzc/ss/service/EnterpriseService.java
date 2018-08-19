@@ -60,4 +60,16 @@ public interface EnterpriseService {
      * @return
      */
     List<JobInfo> getSelfJobList(Integer enterpriseId);
+
+    /**
+     * 获取包含主键ID，全称，状态字段的企业信息结合
+     * @return
+     */
+    List<EnterpriseInfo> getSimpleList();
+
+    /**
+     * 获取所有
+     * @return
+     */
+    List<EnterpriseInfo> getAllList();
 }

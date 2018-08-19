@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -21,7 +22,6 @@ import java.util.Date;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Entity
 @DynamicInsert
@@ -30,7 +30,7 @@ import java.util.Date;
 public class EnterpriseInfo {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "主键ID")
     private Integer enterpriseId;
 
@@ -40,6 +40,9 @@ public class EnterpriseInfo {
     @ApiModelProperty(value = "全称")
     private String fullName;
 
+    @ApiModelProperty(value = "负责人名称")
+    private String manageName;
+
     @ApiModelProperty(value = "简介")
     private String intro;
 
@@ -47,7 +50,7 @@ public class EnterpriseInfo {
     private String enterpriseAddress;
 
     @ApiModelProperty(value = "企业QQ")
-    private String enterpriseQQ;
+    private String enterpriseQq;
 
     @ApiModelProperty(value = "排序字段")
     private Integer sort;
@@ -66,4 +69,14 @@ public class EnterpriseInfo {
 
     @ApiModelProperty(value = "修改时间")
     private Date updateTime;
+
+
+    public EnterpriseInfo(String enterprisePhone, String fullName, Integer status) {
+        this.enterprisePhone = enterprisePhone;
+        this.fullName = fullName;
+        this.status = status;
+    }
+
+    public EnterpriseInfo() {
+    }
 }

@@ -2,10 +2,13 @@ package com.zzc.ss.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.zzc.ss.entity.JobCategory;
 import com.zzc.ss.entity.JobInfo;
 import com.zzc.ss.entity.UserJob;
 import com.zzc.ss.enums.JobStatusEnum;
 import com.zzc.ss.exception.JobNotExistException;
+import com.zzc.ss.repository.EnterpriseInfoRepository;
+import com.zzc.ss.repository.JobCategoryRepository;
 import com.zzc.ss.repository.JobInfoRepository;
 import com.zzc.ss.repository.UserJobRepository;
 import com.zzc.ss.service.JobInfoBackupService;
@@ -38,6 +41,12 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     private UserJobRepository userJobRepository;
+
+    @Autowired
+    private JobCategoryRepository jobCategoryRepository;
+
+    @Autowired
+    private EnterpriseInfoRepository enterpriseInfoRepository;
 
     private Integer userId;
 
@@ -97,7 +106,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<JobInfo> getJonInfoList(Pageable pageable, String jobCategoryId, String enterpriseId, String status) {
+    public Page<JobVO> getJonInfoList(Pageable pageable, String jobCategoryId, String enterpriseId, String status) {
         Specification<JobInfo> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> predicateList = Lists.newArrayList();
             if (!Strings.isNullOrEmpty(jobCategoryId)) {
@@ -107,24 +116,76 @@ public class JobServiceImpl implements JobService {
                 predicateList.add(criteriaBuilder.equal(root.get("enterpriseId"), Integer.parseInt(enterpriseId)));
             }
             if (!Strings.isNullOrEmpty(status)) {
-                predicateList.add(criteriaBuilder.equal(root.get("enterpriseId"), Integer.parseInt(status)));
+                predicateList.add(criteriaBuilder.equal(root.get("status"), Integer.parseInt(status)));
             }
 
             int size = predicateList.size();
             return criteriaBuilder.and(predicateList.toArray(new Predicate[size]));
         };
 
-        return jobInfoRepository.findAll(specification,pageable);
+        Page<JobInfo> page = jobInfoRepository.findAll(specification, pageable);
+        this.userId = null;
+        return page.map(this::jobInfoConvertVO);
+    }
+
+    @Override
+    public Boolean applySuccessByJobId(Integer jobId) {
+        JobInfo jobInfo = jobInfoRepository.getOne(jobId);
+        if (jobInfo == null) {
+            throw new JobNotExistException();
+        }
+        jobInfo.setStatus(JobStatusEnum.APPLY_PASS.getCode());
+        jobInfoRepository.save(jobInfo);
+        return true;
+    }
+
+    @Override
+    public Boolean applyFailByJobId(Integer jobId) {
+        JobInfo jobInfo = jobInfoRepository.getOne(jobId);
+        if (jobInfo == null) {
+            throw new JobNotExistException();
+        }
+        jobInfo.setStatus(JobStatusEnum.APPLE_FAIL.getCode());
+        jobInfoRepository.save(jobInfo);
+        return true;
+    }
+
+    @Override
+    public Boolean hideByJobId(Integer jobId) {
+        JobInfo jobInfo = jobInfoRepository.getOne(jobId);
+        if (jobInfo == null) {
+            throw new JobNotExistException();
+        }
+        jobInfo.setStatus(JobStatusEnum.FORBIDDEN.getCode());
+        jobInfoRepository.save(jobInfo);
+        return true;
     }
 
     private JobVO jobInfoConvertVO(JobInfo jobInfo) {
 
         JobVO jobVO = new JobVO();
         BeanUtils.copyProperties(jobInfo, jobVO);
-        UserJob userJob = userJobRepository.findByUserIdAndJobId(userId, jobInfo.getJobId());
-        if (userJob != null) {
-            jobVO.setUserApplyStatus(userJob.getStatus());
+
+        if (this.userId != null) {
+            UserJob userJob = userJobRepository.findByUserIdAndJobId(userId, jobInfo.getJobId());
+            if (userJob != null) {
+                jobVO.setUserApplyStatus(userJob.getStatus());
+                this.userId = null;
+            }
         }
+
+        Integer jobCategoryId = jobInfo.getJobCategoryId();
+        if (jobCategoryId != null) {
+            JobCategory jobCategory = jobCategoryRepository.getOne(jobCategoryId);
+            jobVO.setJobCategoryName(jobCategory.getCategoryName());
+        }
+
+        Integer enterpriseId = jobInfo.getEnterpriseId();
+        if (enterpriseId != null) {
+            String fullName = enterpriseInfoRepository.selectEnterpriseFullNameById(enterpriseId);
+            jobVO.setEnterpriseName(fullName);
+        }
+
         return jobVO;
     }
 

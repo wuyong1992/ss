@@ -15,6 +15,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author JianGuo
  * on 2018/8/10
@@ -64,6 +66,13 @@ public class EnterpriseBackendController {
                                             @RequestParam(value = "status", required = false, defaultValue = "") String status) {
         Page<EnterpriseInfo> page = enterpriseService.getEnterpriseList(pageable, enterpriseFullName, status);
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.OPERATE_SUCCESS, page);
+    }
+
+    @GetMapping("simple-list")
+    @ApiOperation(value = "获取简单的企业信息集合，包括企业全称，ID，状态")
+    public ServerResponse getSimpleList(){
+        List<EnterpriseInfo> list = enterpriseService.getAllList();
+        return ServerResponse.createBySuccess(Const.ExecuteResultMessage.OPERATE_SUCCESS, list);
     }
 
 

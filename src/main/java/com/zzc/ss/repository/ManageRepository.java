@@ -9,4 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * description:
  */
 public interface ManageRepository extends JpaRepository<Manage, Integer> {
+
+    /**
+     *
+     * @param account
+     * @return
+     */
+    Manage findByAccount(String account);
+
 }

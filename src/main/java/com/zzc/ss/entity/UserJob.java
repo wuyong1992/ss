@@ -59,7 +59,7 @@ public class UserJob {
     private Integer applySuccessCount;
 
     @ApiModelProperty(value = "创建时间")
-    private Date crateTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "修改时间")
     private Date updateTime;

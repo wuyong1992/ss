@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class UserJobBackendController {
             @ApiImplicitParam(name = "enterpriseFullName", value = "发布招聘的公司名称", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "status", value = "求职状态", dataType = "int", paramType = "query"),
     })
-    public ServerResponse<Page<UserJobVO>> getUserList(@PageableDefault(page = 0, size = 10, sort = "sort,desc") Pageable pageable,
+    public ServerResponse<Page<UserJobVO>> getUserList(@PageableDefault(sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                                                        @RequestParam(value = "realName", required = false, defaultValue = "") String realName,
                                                        @RequestParam(value = "phone", required = false, defaultValue = "") String phone,
                                                        @RequestParam(value = "enterpriseFullName", required = false, defaultValue = "") String enterpriseFullName,
@@ -54,7 +55,7 @@ public class UserJobBackendController {
     @PutMapping("apply-success/{id}")
     @ApiOperation(value = "求职申请审核通过")
     @ApiImplicitParam(name = "id", value = "user-job 的主键ID", dataType = "int", paramType = "path")
-    public ServerResponse applySuccess(@PathVariable Integer id){
+    public ServerResponse applySuccess(@PathVariable Integer id) {
         userJobService.applySuccess(id);
         return ServerResponse.createBySuccessMsg(Const.ExecuteResultMessage.OPERATE_SUCCESS);
     }
@@ -62,7 +63,7 @@ public class UserJobBackendController {
     @PutMapping("apply-fail/{id}")
     @ApiOperation(value = "拒绝求职申请")
     @ApiImplicitParam(name = "id", value = "user-job 的主键ID", dataType = "int", paramType = "path")
-    public ServerResponse applyFail(@PathVariable Integer id){
+    public ServerResponse applyFail(@PathVariable Integer id) {
         userJobService.applyFail(id);
         return ServerResponse.createBySuccessMsg(Const.ExecuteResultMessage.OPERATE_SUCCESS);
     }

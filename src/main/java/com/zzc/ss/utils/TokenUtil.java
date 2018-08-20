@@ -178,7 +178,7 @@ public class TokenUtil {
     public static Integer getUserIdFromToken(String token) {
         // 从请求中获取用户的id
         Claims claims = TokenUtil.getClaimsFromToken(token);
-        return (Integer) claims.get(Const.AuthJwtTokenClaims.USER_ID);
+        return (Integer) claims.get(Const.UserAuthJwtTokenClaims.USER_ID);
     }
 
     /**
@@ -190,7 +190,7 @@ public class TokenUtil {
     public static Integer getEnterpriseIdFromToken(String token) {
         // 从请求中获取用户的id
         Claims claims = TokenUtil.getClaimsFromToken(token);
-        return (Integer) claims.get(Const.AuthJwtTokenClaims.ENTERPRISE_ID);
+        return (Integer) claims.get(Const.UserAuthJwtTokenClaims.ENTERPRISE_ID);
     }
 
     /**
@@ -202,7 +202,7 @@ public class TokenUtil {
     public static String getUnionidFromToken(String token) {
         // 从请求中获取用户的unionid
         Claims claims = TokenUtil.getClaimsFromToken(token);
-        return (String) claims.get(Const.AuthJwtTokenClaims.UNIONID);
+        return (String) claims.get(Const.UserAuthJwtTokenClaims.UNIONID);
     }
 
     /**
@@ -214,7 +214,7 @@ public class TokenUtil {
     public static String getOpenidFromToken(String token) {
         // 从请求中获取用户的openid
         Claims claims = TokenUtil.getClaimsFromToken(token);
-        return (String) claims.get(Const.AuthJwtTokenClaims.OPENID);
+        return (String) claims.get(Const.UserAuthJwtTokenClaims.OPENID);
     }
     /**
      * 从请求中获取用户手机号
@@ -225,7 +225,7 @@ public class TokenUtil {
     public static String getMemberPhone(String token) {
         // 从请求中获取用户的openid
         Claims claims = TokenUtil.getClaimsFromToken(token);
-        return (String) claims.get(Const.AuthJwtTokenClaims.PHONE);
+        return (String) claims.get(Const.UserAuthJwtTokenClaims.PHONE);
     }
 
 

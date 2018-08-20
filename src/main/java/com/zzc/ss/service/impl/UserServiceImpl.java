@@ -26,6 +26,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -118,6 +119,7 @@ public class UserServiceImpl implements UserService {
                     .jobId(jobId)
                     .applyCount(1)
                     .status(UserApplyJobStatusEnum.IN_APPLYING.getCode())
+                    .createTime(new Date())
                     .build();
         }
         userJobRepository.save(userJob);
@@ -161,10 +163,10 @@ public class UserServiceImpl implements UserService {
         String tokenId = String.valueOf(System.currentTimeMillis()) + "-" + String.valueOf(userInfo.getUserId());
 
         Map<String, Object> claims = Maps.newHashMap();
-        claims.put(Const.AuthJwtTokenClaims.USER_ID, userInfo.getUserId());
-        claims.put(Const.AuthJwtTokenClaims.OPENID, userInfo.getUserId());
-        claims.put(Const.AuthJwtTokenClaims.UNIONID, userInfo.getUnionid());
-        claims.put(Const.AuthJwtTokenClaims.PHONE, userInfo.getPhone());
+        claims.put(Const.UserAuthJwtTokenClaims.USER_ID, userInfo.getUserId());
+        claims.put(Const.UserAuthJwtTokenClaims.OPENID, userInfo.getUserId());
+        claims.put(Const.UserAuthJwtTokenClaims.UNIONID, userInfo.getUnionid());
+        claims.put(Const.UserAuthJwtTokenClaims.PHONE, userInfo.getPhone());
 
         String subject = userInfo.getNickname();
 

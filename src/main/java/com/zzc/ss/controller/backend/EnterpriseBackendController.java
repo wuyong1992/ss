@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -59,9 +60,9 @@ public class EnterpriseBackendController {
             @ApiImplicitParam(name = "page", value = "当前页码，从0开始，默认为0", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "size", value = "当前页容量，默认10条", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "fullName", value = "企业名称", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "status", value = "招聘信息状态", dataType = "int", paramType = "query")
+            @ApiImplicitParam(name = "status", value = "企业状态", dataType = "int", paramType = "query")
     })
-    public ServerResponse getEnterpriseList(@PageableDefault Pageable pageable,
+    public ServerResponse getEnterpriseList(@PageableDefault(sort = {"sort"}, direction = Sort.Direction.DESC) Pageable pageable,
                                             @RequestParam(value = "fullName", required = false, defaultValue = "") String enterpriseFullName,
                                             @RequestParam(value = "status", required = false, defaultValue = "") String status) {
         Page<EnterpriseInfo> page = enterpriseService.getEnterpriseList(pageable, enterpriseFullName, status);
@@ -70,7 +71,7 @@ public class EnterpriseBackendController {
 
     @GetMapping("simple-list")
     @ApiOperation(value = "获取简单的企业信息集合，包括企业全称，ID，状态")
-    public ServerResponse getSimpleList(){
+    public ServerResponse getSimpleList() {
         List<EnterpriseInfo> list = enterpriseService.getAllList();
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.OPERATE_SUCCESS, list);
     }

@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class UserBackendController {
             @ApiImplicitParam(name = "phone", value = "用户手机号", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "subscribeStatus", value = "关注状态", dataType = "int", paramType = "query"),
     })
-    public ServerResponse<Page<UserInfo>> getUserList(@PageableDefault(page = 0, size = 10, sort = "sort,desc") Pageable pageable,
+    public ServerResponse<Page<UserInfo>> getUserList(@PageableDefault(sort = {"sort"},direction = Sort.Direction.DESC) Pageable pageable,
                                       @RequestParam(value = "nickname",required = false,defaultValue = "")String nickname,
                                       @RequestParam(value = "realName",required = false,defaultValue = "")String realName,
                                       @RequestParam(value = "phone",required = false,defaultValue = "")String phone,

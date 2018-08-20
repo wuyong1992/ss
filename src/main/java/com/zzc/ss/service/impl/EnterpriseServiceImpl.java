@@ -123,4 +123,14 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return enterpriseInfoRepository.findAll(new Sort(Sort.Direction.DESC, "sort"));
     }
 
+    @Override
+    public EnterpriseInfo getEnterpriseInfoByUserId(Integer userId) {
+        UserInfo userInfo = userInfoRepository.getOne(userId);
+        Integer enterpriseId = userInfo.getEnterpriseId();
+        if (enterpriseId == null) {
+            throw new EnterPriseNotExistException();
+        }
+        return enterpriseInfoRepository.getOne(enterpriseId);
+    }
+
 }

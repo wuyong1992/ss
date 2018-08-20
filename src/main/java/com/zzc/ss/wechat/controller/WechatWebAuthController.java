@@ -26,7 +26,7 @@ import java.net.URLEncoder;
 @Controller
 @RequestMapping("/wechat")
 @Slf4j
-public class WechatAuthController {
+public class WechatWebAuthController {
 
     @Autowired
     private WxMpService wxMpService;

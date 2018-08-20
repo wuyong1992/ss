@@ -29,7 +29,6 @@ public class UserController {
 
     @PostMapping("save")
     @ApiOperation(value = "更新用户信息")
-    @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header")
     public ServerResponse save(@RequestHeader(name = "Authorization") String token,
                                @RequestBody UserInfo userInfo) {
         Integer userId = TokenUtil.getUserIdFromToken(token);
@@ -43,7 +42,6 @@ public class UserController {
 
     @GetMapping()
     @ApiOperation(value = "获取用户的信息")
-    @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header")
     public ServerResponse<UserInfo> getUserInfo(@RequestHeader(name = "Authorization") String token){
         Integer userId = TokenUtil.getUserIdFromToken(token);
         UserInfo userInfo = userService.getUserInfoByUserId(userId);

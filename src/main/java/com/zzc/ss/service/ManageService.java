@@ -6,4 +6,10 @@ package com.zzc.ss.service;
  * description:
  */
 public interface ManageService {
+    /**
+     * 管理员登录
+     * @param account
+     * @param password
+     */
+    String login(String account, String password);
 }

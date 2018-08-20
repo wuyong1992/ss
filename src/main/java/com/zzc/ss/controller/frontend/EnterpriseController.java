@@ -30,10 +30,18 @@ public class EnterpriseController {
     @Autowired
     private EnterpriseService enterpriseService;
 
+    @GetMapping()
+    @ApiOperation(value = "获取企业信息")
+    public ServerResponse<EnterpriseInfo> getEnterpriseInfo(@RequestHeader(name = "Authorization") String token){
+        Integer userId = TokenUtil.getUserIdFromToken(token);
+        EnterpriseInfo enterpriseInfo = enterpriseService.getEnterpriseInfoByUserId(userId);
+        return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, enterpriseInfo);
+    }
+
+
 
     @PostMapping()
     @ApiOperation(value = "新增或者修改公司信息")
-    @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header")
     public ServerResponse save(@RequestHeader(name = "Authorization") String token,
                                @RequestBody EnterpriseInfo enterpriseInfo) {
         Integer userId = TokenUtil.getUserIdFromToken(token);
@@ -44,7 +52,6 @@ public class EnterpriseController {
 
     @PostMapping("save-job")
     @ApiOperation(value = "企业创建一个招聘信息，无论更新还是新增，状态都归为审核中")
-    @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header")
     public ServerResponse saveJob(@RequestHeader(name = "Authorization") String token,
                                   @RequestBody JobInfo jobInfo) {
         Integer enterpriseId = TokenUtil.getEnterpriseIdFromToken(token);
@@ -55,7 +62,6 @@ public class EnterpriseController {
 
     @GetMapping("job-list")
     @ApiOperation(value = "企业查询自己创建的招聘信息")
-    @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header")
     public ServerResponse getSelfJobList(@RequestHeader(name = "Authorization") String token) {
         // TODO: 2018/8/16 分页查询
         Integer enterpriseId = TokenUtil.getEnterpriseIdFromToken(token);

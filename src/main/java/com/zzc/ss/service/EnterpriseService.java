@@ -72,4 +72,11 @@ public interface EnterpriseService {
      * @return
      */
     List<EnterpriseInfo> getAllList();
+
+    /**
+     * 通过用户ID获取企业信息
+     * @param userId
+     * @return
+     */
+    EnterpriseInfo getEnterpriseInfoByUserId(Integer userId);
 }

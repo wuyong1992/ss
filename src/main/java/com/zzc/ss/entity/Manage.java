@@ -35,6 +35,9 @@ public class Manage {
     @ApiModelProperty(value = "主键ID")
     private Integer id;
 
+    @ApiModelProperty(value = "用户名称")
+    private String name;
+
     @ApiModelProperty(value = "账号")
     private String account;
 

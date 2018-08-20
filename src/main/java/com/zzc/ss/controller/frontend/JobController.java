@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +37,12 @@ public class JobController {
     @GetMapping("list")
     @ApiOperation(value = "获取招聘信息列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header"),
             @ApiImplicitParam(name = "page", value = "当前页码，从0开始，默认为0", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "size", value = "当前页容量，默认10条", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "categoryId", value = "工作分类ID", dataType = "int", paramType = "query")
     })
     public ServerResponse<Page<JobVO>> jobVOList(@RequestHeader(name = "Authorization") String token,
-                                                 @PageableDefault(page = 0, size = 10, sort = "sort,desc") Pageable pageable,
+                                                 @PageableDefault(sort = {"sort"},direction = Sort.Direction.DESC) Pageable pageable,
                                                  @RequestParam(value = "categoryId", required = false, defaultValue = "") String categoryId) {
         Integer userId = TokenUtil.getUserIdFromToken(token);
         Integer jobCategoryId = null;
@@ -56,7 +56,6 @@ public class JobController {
     @GetMapping("{jobId}")
     @ApiOperation(value = "获取单个job信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "auth token", required = true, dataTypeClass = String.class, paramType = "header"),
             @ApiImplicitParam(name = "jobId", value = "job ID", required = true, dataTypeClass = Integer.class, paramType = "path")
     })
     public ServerResponse<JobVO> getJobVO(@RequestHeader(name = "Authorization") String token,

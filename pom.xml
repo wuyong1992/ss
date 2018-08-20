@@ -141,6 +141,7 @@
     </dependencies>
 
     <build>
+        <finalName>ss-api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

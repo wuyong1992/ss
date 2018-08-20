@@ -79,12 +79,30 @@ public class ControllerExceptionHandler {
     public ServerResponse handlerInfoNotCompleteException(InfoNotCompleteException ex) {
         return ServerResponse.createByErrorMsg(ex.getMessage());
     }
+
     /**
      * 招聘分类不存在异常
      */
     @ExceptionHandler(JobCategoryNotExistException.class)
     @ResponseStatus(HttpStatus.OK)
     public ServerResponse handlerJobCategoryNotExistException(JobCategoryNotExistException ex) {
+        return ServerResponse.createByErrorMsg(ex.getMessage());
+    }
+
+    /**
+     * 账号不匹配
+     */
+    @ExceptionHandler(ManageAccountMismatchingException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ServerResponse handlerManageAccountMismatchingException(ManageAccountMismatchingException ex) {
+        return ServerResponse.createByErrorMsg(ex.getMessage());
+    }
+    /**
+     * 密码不匹配
+     */
+    @ExceptionHandler(ManagePasswordMismatchingException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ServerResponse handlerManagePasswordMismatchingException(ManagePasswordMismatchingException ex) {
         return ServerResponse.createByErrorMsg(ex.getMessage());
     }
 

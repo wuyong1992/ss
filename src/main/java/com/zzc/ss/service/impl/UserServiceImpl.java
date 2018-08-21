@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo save(UserInfo userInfo) {
-        userInfo.setIsInfoComplete(InfoCompleteStatusEnum.NO.getCode());
+        userInfo.setIsInfoComplete(InfoCompleteStatusEnum.YES.getCode());
         return userInfoRepository.save(userInfo);
     }
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String webAuthAndReturnToken(WxMpUser wxMpUser) {
+    public String wechatWebAuthAndReturnToken(WxMpUser wxMpUser) {
         UserInfo userInfo = this.saveUserFromWxMpUser(wxMpUser);
 
         // 构建TOKEN
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserInfo userInfo = userInfoRepository.getOne(userId);
-        if (InfoCompleteStatusEnum.YES.getCode().equals(userInfo.getIsInfoComplete())) {
+        if (InfoCompleteStatusEnum.NO.getCode().equals(userInfo.getIsInfoComplete())) {
             throw new InfoNotCompleteException();
         }
 
@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
             userJob.setApplyCount(userJob.getApplyCount() + 1);
         } else {
             userJob = UserJob.builder()
+                    .enterpriseId(jobinfo.getEnterpriseId())
                     .userId(userId)
                     .jobId(jobId)
                     .applyCount(1)
@@ -159,38 +160,47 @@ public class UserServiceImpl implements UserService {
         return userInfoRepository.findAll(specification, pageable);
     }
 
+    @Override
+    public Boolean checkToken(String token) {
+        Integer userId = TokenUtil.getUserIdFromToken(token);
+        UserInfo userInfo = userInfoRepository.getOne(userId);
+        return userInfo != null;
+    }
+
     private String createToken(UserInfo userInfo) throws Exception {
         String tokenId = String.valueOf(System.currentTimeMillis()) + "-" + String.valueOf(userInfo.getUserId());
 
         Map<String, Object> claims = Maps.newHashMap();
         claims.put(Const.UserAuthJwtTokenClaims.USER_ID, userInfo.getUserId());
+        claims.put(Const.UserAuthJwtTokenClaims.ENTERPRISE_ID, userInfo.getEnterpriseId());
         claims.put(Const.UserAuthJwtTokenClaims.OPENID, userInfo.getUserId());
         claims.put(Const.UserAuthJwtTokenClaims.UNIONID, userInfo.getUnionid());
         claims.put(Const.UserAuthJwtTokenClaims.PHONE, userInfo.getPhone());
 
         String subject = userInfo.getNickname();
 
-        // 创建时间的毫米数-用户ID + claims + 用户的昵称
+        // 创建时间的毫秒数-用户ID + claims + 用户的昵称
         return TokenUtil.createJWT(tokenId, claims, subject);
     }
 
 
     private UserInfo saveUserFromWxMpUser(WxMpUser wxMpUser) {
-        UserInfo result = null;
-        if (wxMpUser != null) {
-            String openId = wxMpUser.getOpenId();
-            UserInfo userInfo = this.findByOpenid(openId);
-            userInfo.setUnionid(wxMpUser.getUnionId())
-                    .setSex(wxMpUser.getSex())
-                    .setProvince(wxMpUser.getProvince())
-                    .setCity(wxMpUser.getCity())
-                    .setCountry(wxMpUser.getCountry())
-                    .setPrivilege(GsonUtil.objectToJson(wxMpUser.getPrivileges()))
-                    .setNickname(wxMpUser.getNickname())
-                    .setHeadimgurl(wxMpUser.getHeadImgUrl())
-                    .setSubscribeStatus(UserSubscribeEnum.SUBSCRIBE.getCode());
-            result = this.save(userInfo);
+        String openId = wxMpUser.getOpenId();
+        UserInfo userInfo = this.findByOpenid(openId);
+        if (userInfo == null) {
+            // 该用户没授权过或者没有改用户的信息
+            userInfo = new UserInfo();
+            userInfo.setOpenid(openId);
         }
-        return result;
+        userInfo.setUnionid(wxMpUser.getUnionId())
+                .setSex(wxMpUser.getSex())
+                .setProvince(wxMpUser.getProvince())
+                .setCity(wxMpUser.getCity())
+                .setCountry(wxMpUser.getCountry())
+                .setPrivilege(GsonUtil.objectToJson(wxMpUser.getPrivileges()))
+                .setNickname(wxMpUser.getNickname())
+                .setHeadimgurl(wxMpUser.getHeadImgUrl())
+                .setSubscribeStatus(UserSubscribeEnum.SUBSCRIBE.getCode());
+        return this.save(userInfo);
     }
 }

@@ -23,6 +23,8 @@ public class Const {
         public static final String APPLY_ENTERPRISE_SUBMIT_SUCCESS = "企业申请已提交，请耐心等待工作人员联系";
         public static final String TOKEN_CREATE_ERROR = "TOKEN生成异常";
         public static final String LOGIN_SUCCESS = "登录成功";
+        public static final String TOKEN_EXPIRE = "TOKEN过期或失效";
+        public static final String TOKEN_VALID = "有效TOKEN";
     }
 
     /**

@@ -50,7 +50,7 @@ public interface UserService {
      * @param wxMpUser
      * @return
      */
-    String webAuthAndReturnToken(WxMpUser wxMpUser);
+    String wechatWebAuthAndReturnToken(WxMpUser wxMpUser);
 
     /**
      * 申请工作
@@ -77,4 +77,11 @@ public interface UserService {
      * @return
      */
     Page<UserInfo> getUserList(Pageable pageable, String nickname, String realName, String phone, String subscribeStatus);
+
+    /**
+     * 校验token有效性
+     * @param token
+     * @return
+     */
+    Boolean checkToken(String token);
 }

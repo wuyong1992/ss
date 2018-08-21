@@ -26,8 +26,8 @@ wechat:
     secret: b37128a06e9ab8c8a210f4e9ea3ad229
     token: zzc_student_service_2018
     aesKey: FhO2btVtMFI4y3AMULNoSxaBnaRkTLuzY1xh7ocWUKA
-authUrl: http://sa-api.zswhjt.com/wechat/user_info
-authRedirectUrl: http://sa-wx.zswhjt.com/auth_success?wantIntoUrl=
+authUrl: http://ss-api.otvoo.com/wechat/auth-user-info
+authRedirectUrl: http://ss-wx.otvoo.com/student-center
 logging:
   level:
     com.zzc.ss: debug

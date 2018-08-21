@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.URLEncoder;
-
 /**
  * created by JianGuo
  * on 2018/3/28
@@ -43,27 +41,24 @@ public class WechatWebAuthController {
     /**
      * 构造用户授权url
      *
-     * @param wantIntoUrl 用户原先想要进入的页面url
      * @return 重定向到授权页面
      */
-    @RequestMapping("authorize")
-    public ModelAndView authorize(@RequestParam(value = "wantIntoUrl", required = false) String wantIntoUrl) {
-        String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(authUrl, WxConsts.OAuth2Scope.SNSAPI_USERINFO, URLEncoder.encode(wantIntoUrl));
+    @RequestMapping("web-auth")
+    public ModelAndView authorize() {
+        String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(authUrl, WxConsts.OAuth2Scope.SNSAPI_USERINFO, "");
         log.info("【微信网页授权 -- 获取code，redirectUrl={}】", redirectUrl);
         return new ModelAndView("redirect:" + redirectUrl);
     }
 
     /**
      * 用户授权
-     *
-     * @param wantIntoUrl 用户原先想要进入的页面url
-     * @param code        点击同意授权微信端发回来的code
-     * @return 重定向回原先希望进入的页面
+     * 重定向回学生中心
+     * @param code 点击同意授权微信端发回来的code
+     * @return
      */
-    @GetMapping("user_info")
+    @GetMapping("auth-user-info")
     @ResponseBody
-    public ModelAndView userInfo(@RequestParam(value = "state", required = false) String wantIntoUrl,
-                                 @RequestParam("code") String code) {
+    public ModelAndView userInfo(@RequestParam("code") String code) {
 
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = null;
         try {
@@ -93,17 +88,14 @@ public class WechatWebAuthController {
         }
         log.debug("wxMpUser:{}", wxMpUser.toString());
 
-        userService.webAuthAndReturnToken(wxMpUser);
-
-        String jwt = userService.webAuthAndReturnToken(wxMpUser);
+        String jwt = userService.wechatWebAuthAndReturnToken(wxMpUser);
         if (jwt == null) {
             log.error("【授权失败 ---  token创建失败】");
             // TODO: 2018/4/12 重定向到错误页
         }
 
-//        String redirectUrl = "http://sa-wechat.natapp1.cc/auth_success?wantIntoUrl=" + wantIntoUrl + "&token=" + jwt;
-        String redirectUrl = authRedirectUrl + wantIntoUrl + "&token=" + jwt;
-        log.info("redirectUrl:{}", redirectUrl);
+        String redirectUrl = authRedirectUrl + "?token=" + jwt;
+        log.debug("redirectUrl:{}", redirectUrl);
         return new ModelAndView("redirect:" + redirectUrl);
     }
 

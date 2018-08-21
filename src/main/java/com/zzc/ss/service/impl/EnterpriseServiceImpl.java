@@ -100,7 +100,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public JobInfo enterpriseSaveJob(Integer enterpriseId, JobInfo jobInfo) {
         EnterpriseInfo enterpriseInfo = enterpriseInfoRepository.getOne(enterpriseId);
-        if (InfoCompleteStatusEnum.YES.getCode().equals(enterpriseInfo.getIsInfoComplete())) {
+        if (InfoCompleteStatusEnum.NO.getCode().equals(enterpriseInfo.getIsInfoComplete())) {
             throw new InfoNotCompleteException();
         }
         jobInfo.setEnterpriseId(enterpriseId);

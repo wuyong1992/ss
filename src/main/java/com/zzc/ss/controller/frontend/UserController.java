@@ -42,10 +42,10 @@ public class UserController {
 
     @GetMapping()
     @ApiOperation(value = "获取用户的信息")
-    public ServerResponse<UserInfo> getUserInfo(@RequestHeader(name = "Authorization") String token){
+    public ServerResponse<UserInfo> getUserInfo(@RequestHeader(name = "Authorization") String token) {
         Integer userId = TokenUtil.getUserIdFromToken(token);
         UserInfo userInfo = userService.getUserInfoByUserId(userId);
-        return ServerResponse.createBySuccess(userInfo);
+        return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, userInfo);
     }
 
     @PostMapping("apply-job/{jobId}")
@@ -56,10 +56,18 @@ public class UserController {
         Integer userId = TokenUtil.getUserIdFromToken(token);
         Integer intJobId = Integer.parseInt(jobId);
         userService.applyJob(userId, intJobId);
-        return ServerResponse.createByErrorMsg(Const.ExecuteResultMessage.APPLY_JOB_SUBMIT_SUCCESS);
+        return ServerResponse.createBySuccessMsg(Const.ExecuteResultMessage.APPLY_JOB_SUBMIT_SUCCESS);
     }
 
-
+    @PutMapping("check-token")
+    @ApiOperation(value = "判断token的有效性")
+    public ServerResponse checkToken(@RequestHeader(name = "Authorization") String token){
+        Boolean result = userService.checkToken(token);
+        if (!result) {
+            return ServerResponse.createByErrorMsg(Const.ExecuteResultMessage.TOKEN_EXPIRE);
+        }
+        return ServerResponse.createBySuccessMsg(Const.ExecuteResultMessage.TOKEN_VALID);
+    }
 
 
 }

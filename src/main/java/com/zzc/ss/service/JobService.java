@@ -24,9 +24,10 @@ public interface JobService {
      * @param userId
      * @param pageable
      * @param categoryId
+     * @param payPeriodType
      * @return
      */
-    Page<JobVO> getJobVOListWithUserId(Integer userId, Pageable pageable, Integer categoryId);
+    Page<JobVO> getJobVOListWithUserId(Integer userId, Pageable pageable, String categoryId , String payPeriodType);
 
     /**
      * 获取单个{@link JobVO}信息

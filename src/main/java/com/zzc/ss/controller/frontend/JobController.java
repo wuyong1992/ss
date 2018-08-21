@@ -39,17 +39,15 @@ public class JobController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "当前页码，从0开始，默认为0", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "size", value = "当前页容量，默认10条", dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "categoryId", value = "工作分类ID", dataType = "int", paramType = "query")
+            @ApiImplicitParam(name = "jobCategoryId", value = "工作分类ID", dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "payPeriodType", value = "薪资结算周期类型", dataType = "int", paramType = "query")
     })
     public ServerResponse<Page<JobVO>> jobVOList(@RequestHeader(name = "Authorization") String token,
-                                                 @PageableDefault(sort = {"sort"},direction = Sort.Direction.DESC) Pageable pageable,
-                                                 @RequestParam(value = "categoryId", required = false, defaultValue = "") String categoryId) {
+                                                 @PageableDefault(sort = {"sort"}, direction = Sort.Direction.DESC) Pageable pageable,
+                                                 @RequestParam(value = "jobCategoryId", required = false, defaultValue = "") String jobCategoryId,
+                                                 @RequestParam(value = "payPeriodType", required = false, defaultValue = "") String payPeriodType) {
         Integer userId = TokenUtil.getUserIdFromToken(token);
-        Integer jobCategoryId = null;
-        if (Strings.isNullOrEmpty(categoryId)) {
-            jobCategoryId = Integer.valueOf(categoryId);
-        }
-        Page<JobVO> page = jobService.getJobVOListWithUserId(userId, pageable,jobCategoryId);
+        Page<JobVO> page = jobService.getJobVOListWithUserId(userId, pageable, jobCategoryId, payPeriodType);
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, page);
     }
 
@@ -65,8 +63,6 @@ public class JobController {
         JobVO vo = jobService.getJobVOWithUserId(userId, intJobId);
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, vo);
     }
-
-
 
 
 }

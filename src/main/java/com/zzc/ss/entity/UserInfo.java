@@ -1,5 +1,6 @@
 package com.zzc.ss.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @ApiModel(value = "用户")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 public class UserInfo {
 
     @Id
@@ -45,6 +47,9 @@ public class UserInfo {
 
     @ApiModelProperty(value = "昵称")
     private String nickname;
+
+    @ApiModelProperty(value = "年龄")
+    private Integer age;
 
     @ApiModelProperty(value = "用户的性别，值为1时是男性，值为2时是女性，值为0时是未知，默认0")
     private Integer sex;

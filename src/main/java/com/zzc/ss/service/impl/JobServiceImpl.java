@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.zzc.ss.entity.JobCategory;
 import com.zzc.ss.entity.JobInfo;
 import com.zzc.ss.entity.UserJob;
+import com.zzc.ss.enums.JobPayPeriodEnum;
 import com.zzc.ss.enums.JobStatusEnum;
 import com.zzc.ss.exception.JobNotExistException;
 import com.zzc.ss.repository.EnterpriseInfoRepository;
@@ -57,14 +58,17 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<JobVO> getJobVOListWithUserId(Integer userId, Pageable pageable, Integer categoryId) {
+    public Page<JobVO> getJobVOListWithUserId(Integer userId, Pageable pageable, String jobCategoryId, String payPeriodType) {
 
         Specification<JobInfo> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> predicateList = Lists.newArrayList();
             // 查询状态为已通过审核的job
             predicateList.add(criteriaBuilder.equal(root.get("status"), JobStatusEnum.APPLY_PASS.getCode()));
-            if (categoryId != null) {
-                predicateList.add(criteriaBuilder.equal(root.get("jobCategoryId"), categoryId));
+            if (!Strings.isNullOrEmpty(jobCategoryId)) {
+                predicateList.add(criteriaBuilder.equal(root.get("jobCategoryId"), Integer.parseInt(jobCategoryId)));
+            }
+            if (!Strings.isNullOrEmpty(payPeriodType)) {
+                predicateList.add(criteriaBuilder.equal(root.get("payPeriodType"), Integer.parseInt(payPeriodType)));
             }
             int size = predicateList.size();
             return criteriaBuilder.and(predicateList.toArray(new Predicate[size]));
@@ -85,9 +89,24 @@ public class JobServiceImpl implements JobService {
         }
         JobVO jobVO = new JobVO();
         BeanUtils.copyProperties(jobInfo, jobVO);
+        Integer payPeriodType = jobVO.getPayPeriodType();
+        if (payPeriodType != null) {
+            jobVO.setPayPeriodTypeStr(JobPayPeriodEnum.codeOf(payPeriodType).getValue());
+        }
         UserJob userJob = userJobRepository.findByUserIdAndJobId(userId, jobInfo.getJobId());
         if (userJob != null) {
             jobVO.setUserApplyStatus(userJob.getStatus());
+        }
+        Integer jobCategoryId = jobInfo.getJobCategoryId();
+        if (jobCategoryId != null) {
+            JobCategory jobCategory = jobCategoryRepository.getOne(jobCategoryId);
+            jobVO.setJobCategoryName(jobCategory.getCategoryName());
+        }
+
+        Integer enterpriseId = jobInfo.getEnterpriseId();
+        if (enterpriseId != null) {
+            String fullName = enterpriseInfoRepository.selectEnterpriseFullNameById(enterpriseId);
+            jobVO.setEnterpriseName(fullName);
         }
         return jobVO;
     }
@@ -124,8 +143,9 @@ public class JobServiceImpl implements JobService {
         };
 
         Page<JobInfo> page = jobInfoRepository.findAll(specification, pageable);
+        Page<JobVO> jobVOPage = page.map(this::jobInfoConvertVO);
         this.userId = null;
-        return page.map(this::jobInfoConvertVO);
+        return jobVOPage;
     }
 
     @Override
@@ -165,12 +185,15 @@ public class JobServiceImpl implements JobService {
 
         JobVO jobVO = new JobVO();
         BeanUtils.copyProperties(jobInfo, jobVO);
+        Integer payPeriodType = jobVO.getPayPeriodType();
+        if (payPeriodType != null) {
+            jobVO.setPayPeriodTypeStr(JobPayPeriodEnum.codeOf(payPeriodType).getValue());
+        }
 
         if (this.userId != null) {
             UserJob userJob = userJobRepository.findByUserIdAndJobId(userId, jobInfo.getJobId());
             if (userJob != null) {
                 jobVO.setUserApplyStatus(userJob.getStatus());
-                this.userId = null;
             }
         }
 

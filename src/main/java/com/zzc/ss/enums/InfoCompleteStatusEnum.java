@@ -10,8 +10,8 @@ public enum InfoCompleteStatusEnum {
     /**
      * 信息是否完整
      */
-    YES(0, "否"),
-    NO(1, "是"),
+    NO(0, "否"),
+    YES(1, "是"),
     ;
 
     private Integer code;

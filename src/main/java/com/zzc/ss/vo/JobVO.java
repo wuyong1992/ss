@@ -51,6 +51,9 @@ public class JobVO {
     @ApiModelProperty(value = "结算周期类型,1日结：2周结；3月结")
     private Integer payPeriodType;
 
+    @ApiModelProperty(value = "结算周期类型,1日结：2周结；3月结")
+    private String payPeriodTypeStr;
+
     @ApiModelProperty(value = "薪资，单位：元，具体是每天还是每周根据payPeriodType来")
     private BigDecimal salary;
 

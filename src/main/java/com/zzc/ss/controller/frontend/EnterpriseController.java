@@ -6,6 +6,7 @@ import com.zzc.ss.entity.EnterpriseInfo;
 import com.zzc.ss.entity.JobInfo;
 import com.zzc.ss.service.EnterpriseService;
 import com.zzc.ss.service.JobService;
+import com.zzc.ss.service.UserService;
 import com.zzc.ss.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,6 +30,9 @@ public class EnterpriseController {
 
     @Autowired
     private EnterpriseService enterpriseService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping()
     @ApiOperation(value = "获取企业信息")
@@ -54,9 +58,10 @@ public class EnterpriseController {
     @ApiOperation(value = "企业创建一个招聘信息，无论更新还是新增，状态都归为审核中")
     public ServerResponse saveJob(@RequestHeader(name = "Authorization") String token,
                                   @RequestBody JobInfo jobInfo) {
-        Integer enterpriseId = TokenUtil.getEnterpriseIdFromToken(token);
+        Integer userId = TokenUtil.getUserIdFromToken(token);
+        Integer enterpriseId = userService.getEnterpriseIdFromUserId(userId);
         JobInfo result = enterpriseService.enterpriseSaveJob(enterpriseId, jobInfo);
-        return ServerResponse.createBySuccess(Const.ExecuteResultMessage.SAVE_SUCCESS, result);
+        return ServerResponse.createBySuccess(Const.ExecuteResultMessage.JOB_SAVE_SUCCESS, result);
     }
 
 
@@ -64,7 +69,8 @@ public class EnterpriseController {
     @ApiOperation(value = "企业查询自己创建的招聘信息")
     public ServerResponse getSelfJobList(@RequestHeader(name = "Authorization") String token) {
         // TODO: 2018/8/16 分页查询
-        Integer enterpriseId = TokenUtil.getEnterpriseIdFromToken(token);
+        Integer userId = TokenUtil.getUserIdFromToken(token);
+        Integer enterpriseId = userService.getEnterpriseIdFromUserId(userId);
         List<JobInfo> list = enterpriseService.getSelfJobList(enterpriseId);
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, list);
     }

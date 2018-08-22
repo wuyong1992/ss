@@ -1,5 +1,6 @@
 package com.zzc.ss.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @ApiModel(value = "企业信息")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 public class EnterpriseInfo {
 
     @Id

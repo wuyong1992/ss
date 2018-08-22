@@ -54,6 +54,24 @@ public class ControllerExceptionHandler {
     }
 
     /**
+     * 企业 不存在异常
+     */
+    @ExceptionHandler(EnterPriseNotExistException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ServerResponse handlerEnterPriseNotExistException(EnterPriseNotExistException ex) {
+        return ServerResponse.createByErrorMsg(ex.getMessage());
+    }
+
+    /**
+     * 用户尚未注册企业 不存在异常
+     */
+    @ExceptionHandler(UserNotHaveEnterpriseException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ServerResponse handlerUserNotHaveEnterpriseException(UserNotHaveEnterpriseException ex) {
+        return ServerResponse.createByErrorMsg(ex.getMessage());
+    }
+
+    /**
      * user job 信息不存在异常
      */
     @ExceptionHandler(UserJobNotExistException.class)

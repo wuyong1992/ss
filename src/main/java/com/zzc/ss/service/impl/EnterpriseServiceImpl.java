@@ -87,6 +87,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public EnterpriseInfo save(Integer userId, EnterpriseInfo enterpriseInfo) {
         enterpriseInfo.setStatus(EnterpriseInfoStatusEnum.IN_APPLYING.getCode());
+        enterpriseInfo.setIsInfoComplete(InfoCompleteStatusEnum.YES.getCode());
         EnterpriseInfo result = enterpriseInfoRepository.save(enterpriseInfo);
         if (result != null) {
             // 企业和用户关联起来

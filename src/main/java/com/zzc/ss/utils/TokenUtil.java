@@ -14,11 +14,11 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * created by JianGuo
  * on 2018/3/30
  * description:
  * JJWT token util
  * 用来生成和解密token
+ * @author JianGuo
  */
 
 
@@ -179,18 +179,6 @@ public class TokenUtil {
         // 从请求中获取用户的id
         Claims claims = TokenUtil.getClaimsFromToken(token);
         return (Integer) claims.get(Const.UserAuthJwtTokenClaims.USER_ID);
-    }
-
-    /**
-     * 从请求中获取企业id
-     *
-     * @param token
-     * @return
-     */
-    public static Integer getEnterpriseIdFromToken(String token) {
-        // 从请求中获取用户的id
-        Claims claims = TokenUtil.getClaimsFromToken(token);
-        return (Integer) claims.get(Const.UserAuthJwtTokenClaims.ENTERPRISE_ID);
     }
 
     /**

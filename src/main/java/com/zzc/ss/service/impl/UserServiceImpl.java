@@ -167,12 +167,20 @@ public class UserServiceImpl implements UserService {
         return userInfo != null;
     }
 
+    @Override
+    public Integer getEnterpriseIdFromUserId(Integer userId) {
+        Integer enterpriseId = userInfoRepository.selectEnterpriseIdByUserId(userId);
+        if (enterpriseId == null) {
+            throw new UserNotHaveEnterpriseException();
+        }
+        return enterpriseId;
+    }
+
     private String createToken(UserInfo userInfo) throws Exception {
         String tokenId = String.valueOf(System.currentTimeMillis()) + "-" + String.valueOf(userInfo.getUserId());
 
         Map<String, Object> claims = Maps.newHashMap();
         claims.put(Const.UserAuthJwtTokenClaims.USER_ID, userInfo.getUserId());
-        claims.put(Const.UserAuthJwtTokenClaims.ENTERPRISE_ID, userInfo.getEnterpriseId());
         claims.put(Const.UserAuthJwtTokenClaims.OPENID, userInfo.getUserId());
         claims.put(Const.UserAuthJwtTokenClaims.UNIONID, userInfo.getUnionid());
         claims.put(Const.UserAuthJwtTokenClaims.PHONE, userInfo.getPhone());
@@ -191,6 +199,9 @@ public class UserServiceImpl implements UserService {
             // 该用户没授权过或者没有改用户的信息
             userInfo = new UserInfo();
             userInfo.setOpenid(openId);
+        }
+        if (userInfo.getPhone() == null) {
+            userInfo.setIsInfoComplete(InfoCompleteStatusEnum.NO.getCode());
         }
         userInfo.setUnionid(wxMpUser.getUnionId())
                 .setSex(wxMpUser.getSex())

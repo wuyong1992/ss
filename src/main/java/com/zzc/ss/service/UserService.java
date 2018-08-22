@@ -84,4 +84,11 @@ public interface UserService {
      * @return
      */
     Boolean checkToken(String token);
+
+    /**
+     * 从用户ID中获取企业ID
+     * @param userId
+     * @return
+     */
+    Integer getEnterpriseIdFromUserId(Integer userId);
 }

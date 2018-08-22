@@ -17,6 +17,7 @@ public class Const {
 
         public static final String SAVE_SUCCESS = "保存成功";
         public static final String SAVE_FAIL = "保存失败";
+        public static final String JOB_SAVE_SUCCESS = "发布招聘成功，请耐心等待后台工作人员审核";
         public static final String APPLY_JOB_SUBMIT_SUCCESS = "工作申请已提交，请保持手机号畅通，耐心等待工作人员联系";
         public static final String QUERY_SUCCESS = "查询成功";
         public static final String OPERATE_SUCCESS = "操作成功";
@@ -35,7 +36,6 @@ public class Const {
         public static final String OPENID = "openid";
         public static final String UNIONID = "unionid";
         public static final String PHONE = "phone";
-        public static final String ENTERPRISE_ID = "enterpriseId";
     }
 
     /**
@@ -58,6 +58,7 @@ public class Const {
         public static final String JOB_CATEGORY_NOT_EXIST = "当前招聘分类不存在";
         public static final String ACCOUNT_MISMATCHING = "账号不匹配";
         public static final String PASSWORD_MISMATCHING = "密码不匹配";
+        public static final String USER_NOT_HAVE_ENTERPRISE = "用户尚未注册企业";
     }
 
 }

@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserInfo userInfo = userInfoRepository.getOne(userId);
-        if (InfoCompleteStatusEnum.NO.getCode().equals(userInfo.getIsInfoComplete())) {
+        if (userInfo.getPhone() == null) {
             throw new InfoNotCompleteException();
         }
 

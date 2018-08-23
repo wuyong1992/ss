@@ -2,6 +2,8 @@ package com.zzc.ss.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.zzc.ss.entity.EnterpriseInfo;
+import com.zzc.ss.entity.JobInfo;
 import com.zzc.ss.entity.UserInfo;
 import com.zzc.ss.entity.UserJob;
 import com.zzc.ss.enums.UserApplyJobStatusEnum;
@@ -14,6 +16,7 @@ import com.zzc.ss.repository.UserJobRepository;
 import com.zzc.ss.service.UserJobService;
 import com.zzc.ss.vo.UserJobVO;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +81,7 @@ public class UserJobServiceImpl implements UserJobService {
 
         Page<UserJob> page = userJobRepository.findAll(userJobSpecification, pageable);
 
-        return null;
+        return page.map(this::convertVO);
     }
 
     @Override
@@ -115,5 +118,22 @@ public class UserJobServiceImpl implements UserJobService {
         userJob.setStatus(UserApplyJobStatusEnum.APPLE_FAIL.getCode());
         userJobRepository.save(userJob);
         return true;
+    }
+
+
+    private UserJobVO convertVO(UserJob userJob) {
+        UserJobVO vo = new UserJobVO();
+        BeanUtils.copyProperties(userJob, vo);
+
+        UserInfo userInfo = userInfoRepository.getOne(userJob.getUserId());
+        EnterpriseInfo enterpriseInfo = enterpriseInfoRepository.getOne(userJob.getEnterpriseId());
+        JobInfo jobInfo = jobInfoRepository.getOne(userJob.getJobId());
+        vo.setRealName(userInfo.getRealName());
+        vo.setPhone(userInfo.getPhone());
+        vo.setJobTitle(jobInfo.getJobTitle());
+        vo.setEnterpriseFullName(enterpriseInfo.getFullName());
+        vo.setEnterprisePhone(enterpriseInfo.getEnterprisePhone());
+
+        return vo;
     }
 }

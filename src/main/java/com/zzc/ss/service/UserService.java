@@ -62,6 +62,7 @@ public interface UserService {
 
     /**
      * 通过用户ID查找用户
+     *
      * @param userId
      * @return
      */
@@ -69,17 +70,21 @@ public interface UserService {
 
     /**
      * 根据条件分页查询用户列表
+     *
      * @param pageable
      * @param nickname
      * @param realName
      * @param phone
+     * @param schoolName
+     * @param sex
      * @param subscribeStatus
      * @return
      */
-    Page<UserInfo> getUserList(Pageable pageable, String nickname, String realName, String phone, String subscribeStatus);
+    Page<UserInfo> getUserList(Pageable pageable, String nickname, String realName, String phone, String schoolName, String sex, String subscribeStatus);
 
     /**
      * 校验token有效性
+     *
      * @param token
      * @return
      */
@@ -87,6 +92,7 @@ public interface UserService {
 
     /**
      * 从用户ID中获取企业ID
+     *
      * @param userId
      * @return
      */

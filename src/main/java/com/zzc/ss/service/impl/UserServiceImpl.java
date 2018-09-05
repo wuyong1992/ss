@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserInfo> getUserList(Pageable pageable, String nickname, String realName, String phone, String subscribeStatus) {
+    public Page<UserInfo> getUserList(Pageable pageable, String nickname, String realName, String phone, String schoolName, String sex, String subscribeStatus) {
 
         Specification<UserInfo> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> predicateList = Lists.newArrayList();
@@ -149,6 +149,12 @@ public class UserServiceImpl implements UserService {
             }
             if (!Strings.isNullOrEmpty(phone)) {
                 predicateList.add(criteriaBuilder.like(root.get("phone"), "%" + phone + "%"));
+            }
+            if (!Strings.isNullOrEmpty(schoolName)) {
+                predicateList.add(criteriaBuilder.like(root.get("schoolName"), "%" + schoolName + "%"));
+            }
+            if (!Strings.isNullOrEmpty(sex)) {
+                predicateList.add(criteriaBuilder.equal(root.get("sex"), Integer.parseInt(sex)));
             }
             if (!Strings.isNullOrEmpty(subscribeStatus)) {
                 Integer subStatus = Integer.valueOf(subscribeStatus);

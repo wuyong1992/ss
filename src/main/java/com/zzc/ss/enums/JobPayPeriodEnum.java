@@ -13,6 +13,7 @@ public enum JobPayPeriodEnum {
     DAY(1,"日结"),
     WEEK(2,"周结"),
     MONTH(3,"月结"),
+    HOUR(4,"小时"),
     ;
 
     private Integer code;

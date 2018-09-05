@@ -54,7 +54,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobInfo findJobInfoByJobId(Integer jobId) {
-        return jobInfoRepository.getOne(jobId);
+        return jobInfoRepository.findById(jobId).get();
     }
 
     @Override

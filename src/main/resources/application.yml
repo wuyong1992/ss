@@ -27,7 +27,7 @@ wechat:
     token: zzc_student_service_2018
     aesKey: FhO2btVtMFI4y3AMULNoSxaBnaRkTLuzY1xh7ocWUKA
 authUrl: http://ss-api.otvoo.com/wechat/auth-user-info
-authRedirectUrl: http://ss-wx.otvoo.com/student-center
+authRedirectUrl: http://ss-wx.otvoo.com/tabs/(student-center:student-center)
 logging:
   level:
     com.zzc.ss: debug

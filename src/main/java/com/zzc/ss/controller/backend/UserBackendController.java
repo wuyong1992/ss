@@ -43,14 +43,19 @@ public class UserBackendController {
             @ApiImplicitParam(name = "nickname", value = "用户昵称", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "realName", value = "用户真实姓名", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "phone", value = "用户手机号", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "schoolName", value = "学校名称", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "sex", value = "性别", dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "phone", value = "用户手机号", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "subscribeStatus", value = "关注状态", dataType = "int", paramType = "query"),
     })
-    public ServerResponse<Page<UserInfo>> getUserList(@PageableDefault(sort = {"sort"},direction = Sort.Direction.DESC) Pageable pageable,
-                                      @RequestParam(value = "nickname",required = false,defaultValue = "")String nickname,
-                                      @RequestParam(value = "realName",required = false,defaultValue = "")String realName,
-                                      @RequestParam(value = "phone",required = false,defaultValue = "")String phone,
-                                      @RequestParam(value = "subscribeStatus",required = false,defaultValue = "")String subscribeStatus){
-        Page<UserInfo> page = userService.getUserList(pageable, nickname, realName, phone, subscribeStatus);
+    public ServerResponse<Page<UserInfo>> getUserList(@PageableDefault(sort = {"sort"}, direction = Sort.Direction.DESC) Pageable pageable,
+                                                      @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname,
+                                                      @RequestParam(value = "realName", required = false, defaultValue = "") String realName,
+                                                      @RequestParam(value = "phone", required = false, defaultValue = "") String phone,
+                                                      @RequestParam(value = "schoolName", required = false, defaultValue = "") String schoolName,
+                                                      @RequestParam(value = "sex", required = false, defaultValue = "") String sex,
+                                                      @RequestParam(value = "subscribeStatus", required = false, defaultValue = "") String subscribeStatus) {
+        Page<UserInfo> page = userService.getUserList(pageable, nickname, realName, phone, schoolName, sex, subscribeStatus);
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, page);
     }
 

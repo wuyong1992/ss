@@ -3,6 +3,7 @@ package com.zzc.ss.controller.frontend;
 import com.zzc.ss.common.Const;
 import com.zzc.ss.common.ServerResponse;
 import com.zzc.ss.entity.UserInfo;
+import com.zzc.ss.service.JobService;
 import com.zzc.ss.service.UserService;
 import com.zzc.ss.utils.TokenUtil;
 import io.swagger.annotations.Api;
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JobService jobService;
 
 
     @PostMapping("save")
@@ -56,6 +60,8 @@ public class UserController {
         Integer userId = TokenUtil.getUserIdFromToken(token);
         Integer intJobId = Integer.parseInt(jobId);
         userService.applyJob(userId, intJobId);
+
+        jobService.applyNumPlus(intJobId);
         return ServerResponse.createBySuccessMsg(Const.ExecuteResultMessage.APPLY_JOB_SUBMIT_SUCCESS);
     }
 

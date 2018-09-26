@@ -1,7 +1,5 @@
 package com.zzc.ss.common;
 
-import com.zzc.ss.vo.JobVO;
-
 /**
  * @author JianGuo
  * on 2018/8/8
@@ -9,6 +7,12 @@ import com.zzc.ss.vo.JobVO;
  */
 public class Const {
 
+
+    /**
+     * 异步执行结果
+     */
+    public static final String ASYNC_RESULT_SUCCESS = "SUCCESS";
+    public static final String ASYNC_RESULT_FAIL = "FAIL";
 
     /**
      * 操作执行的结果常量

@@ -109,6 +109,8 @@ public class UserServiceImpl implements UserService {
         if (userJob != null) {
             if (userJob.getStatus().equals(UserApplyJobStatusEnum.IN_APPLYING.getCode())) {
                 throw new JobInApplyingException();
+            }else {
+                userJob.setStatus(UserApplyJobStatusEnum.IN_APPLYING.getCode());
             }
 
             // 申请通过和申请失败都可以再次申请

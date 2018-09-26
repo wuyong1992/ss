@@ -4,6 +4,9 @@ import com.zzc.ss.entity.JobInfo;
 import com.zzc.ss.vo.JobVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.concurrent.Future;
 
 /**
  * @author JianGuo
@@ -80,4 +83,20 @@ public interface JobService {
      * @return
      */
     Boolean hideByJobId(Integer jobId);
+
+    /**
+     * 异步处理浏览人数加一
+     * @param jobId
+     * @return
+     */
+    @Async
+    Future<String> browseNumPlus(Integer jobId);
+
+    /**
+     * 异步处理申请人数加1
+     * @param jobId
+     * @return
+     */
+    @Async
+    Future<String> applyNumPlus(Integer jobId);
 }

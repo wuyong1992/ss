@@ -2,6 +2,7 @@ package com.zzc.ss.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.zzc.ss.common.Const;
 import com.zzc.ss.entity.JobCategory;
 import com.zzc.ss.entity.JobInfo;
 import com.zzc.ss.entity.UserJob;
@@ -15,15 +16,19 @@ import com.zzc.ss.repository.UserJobRepository;
 import com.zzc.ss.service.JobInfoBackupService;
 import com.zzc.ss.service.JobService;
 import com.zzc.ss.vo.JobVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * @author JianGuo
@@ -31,6 +36,7 @@ import java.util.List;
  * description:
  */
 @Service("jobService")
+@Slf4j
 public class JobServiceImpl implements JobService {
 
 
@@ -108,6 +114,8 @@ public class JobServiceImpl implements JobService {
             String fullName = enterpriseInfoRepository.selectEnterpriseFullNameById(enterpriseId);
             jobVO.setEnterpriseName(fullName);
         }
+
+        log.info("获取单个工作详情success");
         return jobVO;
     }
 
@@ -179,6 +187,36 @@ public class JobServiceImpl implements JobService {
         jobInfo.setStatus(JobStatusEnum.FORBIDDEN.getCode());
         jobInfoRepository.save(jobInfo);
         return true;
+    }
+
+    @Override
+    public Future<String> browseNumPlus(Integer jobId) {
+        if (jobId == null) {
+            return new AsyncResult<>(Const.ASYNC_RESULT_SUCCESS);
+        }
+        JobInfo jobInfo = jobInfoRepository.findById(jobId).orElse(null);
+        if (jobInfo == null) {
+            return new AsyncResult<>(Const.ASYNC_RESULT_SUCCESS);
+        }
+        jobInfo.setBrowseNum(jobInfo.getBrowseNum() + 1);
+        jobInfoRepository.save(jobInfo);
+
+        return new AsyncResult<>(Const.ASYNC_RESULT_SUCCESS);
+    }
+
+    @Override
+    public Future<String> applyNumPlus(Integer jobId) {
+        if (jobId == null) {
+            return new AsyncResult<>(Const.ASYNC_RESULT_SUCCESS);
+        }
+        JobInfo jobInfo = jobInfoRepository.findById(jobId).orElse(null);
+        if (jobInfo == null) {
+            return new AsyncResult<>(Const.ASYNC_RESULT_SUCCESS);
+        }
+        jobInfo.setApplyNum(jobInfo.getApplyNum() + 1);
+        jobInfoRepository.save(jobInfo);
+
+        return new AsyncResult<>(Const.ASYNC_RESULT_SUCCESS);
     }
 
     private JobVO jobInfoConvertVO(JobInfo jobInfo) {

@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("frontend/job")
 @Validated
 @Api(description = "招聘工作前端接口")
+@Slf4j
 public class JobController {
 
     @Autowired
@@ -61,6 +63,9 @@ public class JobController {
         Integer userId = TokenUtil.getUserIdFromToken(token);
         Integer intJobId = Integer.parseInt(jobId);
         JobVO vo = jobService.getJobVOWithUserId(userId, intJobId);
+
+        jobService.browseNumPlus(intJobId);
+
         return ServerResponse.createBySuccess(Const.ExecuteResultMessage.QUERY_SUCCESS, vo);
     }
 

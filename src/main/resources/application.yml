@@ -38,7 +38,7 @@ spring:
      datasource:
        druid:
          driver-class-name: com.mysql.jdbc.Driver
-         url: jdbc:mysql://120.25.253.116:3306/student_service?useUnicode=true&characterEncoding=utf8&useSSL=false
+         url: jdbc:mysql://47.107.119.249:3306/student_service?useUnicode=true&characterEncoding=utf8&useSSL=false
          username: root
          password: zhuzhucheng123
          connection-init-sqls: set names utf8mb4;

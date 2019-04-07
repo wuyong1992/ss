@@ -40,7 +40,7 @@ spring:
          driver-class-name: com.mysql.jdbc.Driver
          url: jdbc:mysql://localhost:3306/student_service?useUnicode=true&characterEncoding=utf8&useSSL=false
          username: root
-         password: zhuzhucheng123
+         password: 6dfea782bbce039f
          connection-init-sqls: set names utf8mb4;
      session:
        store-type: none
